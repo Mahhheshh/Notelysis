@@ -47,7 +47,7 @@ export function fetchNotes() {
     });
 }
 
-export function fetchNoteById(id: number) {
+export function fetchNoteById(id: string) {
   return fetch(`/api/note/${id}`, {
     method: "GET",
     headers: {
@@ -70,7 +70,7 @@ export function fetchNoteById(id: number) {
 }
 
 export function createNote(content: string) {
-  return fetch("api/note/new", {
+  return fetch("/api/note/new", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -92,8 +92,22 @@ export function createNote(content: string) {
     });
 }
 
+export function updateNote(id: string, content: string) {
+  return fetch("/api/note/update", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      token: getStoredToken(),
+    },
+    body: JSON.stringify({
+      id: id,
+      content: content
+    })
+  })
+}
+
 export function deleteNote(id: number) {
-  fetch(`api/note/delete/${id}`, {
+  fetch(`/api/note/delete/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

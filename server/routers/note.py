@@ -22,17 +22,14 @@ def get_note_by_id(note_id: str, user: RequestUserDep, db: SessionDep):
     return note
 
 @note_router.post("/new")
-def new_note(note: schemas.NoteCreate, user: RequestUserDep, db: SessionDep):
-    if len(note.content) > 25:
-        note.title = note.content[:25]
-    else:
-        note.title = note.content
+def new_note(note: schemas.NoteBase, user: RequestUserDep, db: SessionDep):
     note = crud.create_note(db, note, user.id)
     return note
 
 @note_router.put("/update")
-def update_note(note: schemas.NoteCreate, user: RequestUserDep, db: SessionDep): 
-    pass
+def update_note(note: schemas.NoteUpdate, user: RequestUserDep, db: SessionDep): 
+    crud.update_note(db, user.id, note.id, note.content)
+    return {"Message": "Note Updated!"}
 
 @note_router.delete("/delete/{note_id}")
 def delete_note(note_id: int, user: RequestUserDep, db: SessionDep):

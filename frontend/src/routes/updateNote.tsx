@@ -1,36 +1,49 @@
 import { useState } from "react";
-import { createNote } from "../fetch";
+import { useLocation } from "react-router-dom";
 
+import { updateNote } from "../fetch";
 
-export function CreateNote() {
-  const [content, setContent] = useState("");
+export function UpdateNote() {
+  const state = useLocation().state || "";
+  const id = state.noteId || null;
+  const [content, setContent] = useState(state.noteContent);
+
+  if (!id && !state) {
+    return <h1>Cannot update the Note..</h1>;
+  }
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setContent(event.target.value);
   }
 
-  function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
+  async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
+    event.stopPropagation();
     event.preventDefault();
+
     const target = event.target as HTMLButtonElement;
+    target.innerText = "Updating....";
+    target.disabled = true;
 
-    target.innerText = "Creating Note...."
     setTimeout(() => {
-      target.innerText = "Create Note"
-    }, 2000)
+      target.innerText = "Update Note";
+      target.disabled = false;
+    }, 2000);
 
-    const note = createNote(content);
-    note.then((data) => {
-      if (!data) {
-        return;
-      }
-      setContent("");
-    })
+    if (!id) {
+      return;
+    }
+    const resp = await updateNote(id, content);
+    // TODO: Show a toast about following
+    if (!resp.ok) {
+      return; // failed to update note
+    }
+    return; // note updated
   }
 
   return (
     <main className="container mx-auto px-4 py-8">
       <section className="mb-8">
-        <h2 className="mb-6 text-2xl font-bold">Create New Note</h2>
+        <h2 className="mb-6 text-2xl font-bold">Update Note</h2>
         <div className="rounded-lg bg-white p-6 shadow-lg">
           <form>
             <div className="mb-6">
@@ -46,10 +59,11 @@ export function CreateNote() {
             <div className="flex justify-end">
               <button
                 onClick={handleSubmit}
+                disabled={state.noteContent === content}
                 type="submit"
-                className="rounded-lg bg-green-500 px-4 py-2 font-bold text-white shadow-md hover:bg-green-600"
+                className="rounded-lg bg-green-500 px-4 py-2 font-bold text-white shadow-md hover:bg-green-600  disabled:bg-gray-600"
               >
-                Save Note
+                Update Note
               </button>
             </div>
           </form>

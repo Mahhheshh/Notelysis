@@ -8,7 +8,7 @@ export function Header() {
       <Link to="/" className="text-2xl font-bold">
         Amazing Notes
       </Link>
-      {location.pathname === "/new" ? (
+      {location.pathname !== "/" ? (
         <Link
           to="/"
           className="text-gray-200 hover:text-white bg-blue-500 hover:bg-blue-600 rounded-lg py-2 px-4"

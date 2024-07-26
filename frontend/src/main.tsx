@@ -10,6 +10,7 @@ import { Root } from "./routes/root.tsx";
 import { SignIn, SignUp } from "./routes/auth.tsx";
 import { NoteView } from "./routes/NoteView.tsx";
 import { CreateNote } from "./routes/CreateNote.tsx";
+import { UpdateNote } from "./routes/updateNote.tsx";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,11 @@ const router = createBrowserRouter([
       {
         path: "/note/:id",
         element: <NoteView />,
+        errorElement: <ErrorPage />
+      },
+      {
+        path: "/update/",
+        element: <UpdateNote />,
         errorElement: <ErrorPage />
       },
       {

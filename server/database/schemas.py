@@ -1,11 +1,11 @@
 from pydantic import BaseModel
 
 class NoteBase(BaseModel):
-    title: str
-    content: str | None = None
+    content: str = ""
 
-class NoteCreate(NoteBase):
-    title: str | None = None
+class NoteUpdate(BaseModel):
+    id: int
+    content: str
 
 class Note(NoteBase):
     id: int

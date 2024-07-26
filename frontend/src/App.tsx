@@ -7,12 +7,13 @@ import { fetchNotes } from "./fetch";
 
 export type Note = {
   id: number;
-  title: string;
+  content: string
 };
 
 export function App() {
   const { isLogged } = useIsLogged();
   const [notes, setNotes] = useState<Note[]>([]);
+  
   useEffect(() => {
     if (!isLogged) {
       return;
@@ -38,7 +39,7 @@ export function App() {
               return (
                 <Card
                   key={note.id}
-                  title={note.title}
+                  title={note.content}
                   id={note.id}
                   updateNoteList={deleteNote}
                 />

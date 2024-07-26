@@ -21,7 +21,6 @@ def get_or_create_token(user: UserCreate, db: SessionDep):
         user: User = create_user(db, user)
         token = create_access_token(data={"sub": user.id})
     else:
-        print(user.password, db_user.hashed_password, verify_password(user.password, db_user.hashed_password))
         if not verify_password(user.password, db_user.hashed_password):
             raise HTTPException(status_code=400, detail="Invalid credentials")
         token = create_access_token(data={"sub": db_user.id})
